@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                %d{"dd-MM-yyyy;HH:mm:ss,SSSZ"} %-5level [%X{correlationId} %replace(%thread){'\s', ':'}:%X{threadId} psa-integration] %logger{36} - %replace(%msg){'\n','\u2028'} %replace(%xThrowable){'\n','\u2028'}%nopex %n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ASYNC_STDOUT" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>5000</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+
+        <!-- Caller data is relatively slow, so per default disabled -->
+        <includeCallerData>false</includeCallerData>
+
+        <appender-ref ref="STDOUT" />
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="ASYNC_STDOUT"/>
+    </root>
+</configuration>
